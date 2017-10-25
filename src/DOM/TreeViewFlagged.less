@@ -1,0 +1,71 @@
+
+@spHeight: 300px;
+@spHeaderHeight: 50px;
+@strange: 20px;
+@icon-width: 20px;
+@item-height: 20px;
+@shift: 200px; // has to be enough, else increase it
+@num-flags: 3;
+
+.list-item-box {
+    color: green;
+    padding-left: @shift + @icon-width * @num-flags;
+    margin-left: -@shift;
+    user-select: none;
+    white-space: nowrap;
+    cursor: default;
+    &:hover{
+        background-color: #f3f3f3;
+    }
+    &:active{
+        background-color: #fed;
+    }
+}
+.list-item-flags {
+    position: absolute;
+    left: @icon-width;
+    .icon {
+        display: table-cell;
+        height: @item-height;
+        border-right: 1px solid #ccc;
+        padding: 0 4px;
+        &:nth-child(1) { color: #67a; } 
+        &:nth-child(2) { color: #238; } 
+        
+    }
+}
+.list-item-div {
+    padding-left: 4px;
+    .icon {
+        color: #dcc;
+        // cursor: pointer;
+    }
+    .itemLabel {
+        display: inline-block;
+        padding-left: 6px;
+    }
+}
+
+.tree {
+    > :first-child {
+        padding: 0;
+        position: relative;
+        margin-left: -16px;
+        margin-top: 6px;
+    }
+    height: @spHeight - @spHeaderHeight - @strange;
+    // overflow-x: hidden;
+    overflow-y: auto;
+
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    li {
+        margin:0;
+        padding: 0; 
+        padding-left: 20px;
+        white-space:nowrap;
+    }
+}
