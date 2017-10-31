@@ -15,31 +15,6 @@ const _Element = {
 export const genId = () => "id" + Math.random().toString().slice(2);
 export const genClassId = () => "cls" + Math.random().toString().slice(2);
 
-export const checkCreationParams = (args) => {
-    if (!__.checkObject(args)) { throw (`SplitView: no arguments provided`); }
-    if (args.id && !__.checkString(args.id)) { throw ("not a string") }
-    if (args.class && !__.checkString(args.class)) { throw ("not a string") }
-    if (args.attr && !__.checkObject(args.attr)) { throw ("not an object") }
-    if (args.listeners && !__.checkObject(args.listeners)) { throw ("not an object") }
-    if (args.style && !__.checkObject(args.style)) { throw ("not an object") }
-    if (args.children && !__.checkArray(args.children)) { throw ("not an array") }
-    if (args.text) {
-        if (!__.checkString(args.text)) {
-            console.error("Div: text is not a string.");
-        }
-        else if (args.Type === "div") {
-            console.warn("Div: unwrapped text. Children will get omitted.");
-        }
-    }
-    let rest = Object.keys(args).filter(k => !(
-        k == "id" || k == "class" || k == "attr" || k == "Type" || k == "text" ||
-        k == "listeners" || k == "style" || k == "children" || k == "listenTo"
-    ));
-    if (rest.length) {
-        console.warn("redundant properties in args: " + rest.join(", "));
-    }
-}
-
 export const forParents = (elem, untilElem, cb, cbFilter) => {
     let parent = elem;
     while ((parent = parent.parentElement) && parent !== untilElem) {
@@ -128,6 +103,32 @@ const addListeners = (elem, listeners) => {
     });
 };
 
+export const checkCreationParams = (args) => {
+    if (!__.checkObject(args)) { throw (`SplitView: no arguments provided`); }
+    if (args.id && !__.checkString(args.id)) { throw ("not a string") }
+    if (args.class && !__.checkString(args.class)) { throw ("not a string") }
+    if (args.attr && !__.checkObject(args.attr)) { throw ("not an object") }
+    if (args.listeners && !__.checkObject(args.listeners)) { throw ("not an object") }
+    if (args.style && !__.checkObject(args.style)) { throw ("not an object") }
+    if (args.children && !__.checkArray(args.children)) { throw ("not an array") }
+    if (args.text) {
+        if (!__.checkString(args.text)) {
+            console.error("Div: text is not a string.");
+        }
+        else if (args.Type === "div") {
+            console.warn("Div: unwrapped text. Children will get omitted.");
+        }
+    }
+    let rest = Object.keys(args).filter(k => !(
+        k == "id" || k == "class" || k == "attr" || k == "Type" || k == "text" ||
+        k == "listeners" || k == "style" || k == "children" || k == "listenTo" ||
+        k == "fn"
+    ));
+    if (rest.length) {
+        console.warn("redundant properties in args: " + rest.join(", "));
+    }
+}
+
 const Create = (args) => {
     if (__DEBUG__) { checkCreationParams(args) }
     let elem = document.createElement(args.Type);
@@ -144,6 +145,7 @@ const Create = (args) => {
     if (args.listenTo) addListeners(elem, args.listenTo);
     if (args.attr) setAttributes(elem, args.attr);
     if (args.text) elem.innerText = args.text;
+    if (args.fn) elem.fn = args.fn;
 
     return elem;
 };
@@ -266,6 +268,13 @@ export const UnorderedList = (args) => {
     if (!__.checkObject(args)) args = {};
 
     args.Type = 'ul';
+    return Create(args);
+};
+
+export const Style = (args) => {
+    if (!__.checkObject(args)) args = {};
+
+    args.Type = 'style';
     return Create(args);
 };
 
