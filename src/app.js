@@ -188,6 +188,17 @@ let options = DOM.Div({
     ]
 });
 
+let link = DOM.Div({
+    children: [
+        DOM.A({
+            text: "Source code on github.com",
+            attr: {
+                href: "https://github.com/micage/game"
+            }
+        })
+    ]
+})
+
 let gfx = ((numDices, numEyes) => {
     let canvas = document.createElement("canvas");
     canvas.width = 480;
@@ -234,6 +245,7 @@ export default DOM.Div({
     children: [
         dicer,
         gfx.canvas,
-        options
+        options,
+        link
     ]
 });

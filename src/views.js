@@ -16,7 +16,7 @@ const Button = (text, action) => DOM.Span({
     },
     text,
     listenTo: {
-        click: ev => {
+        click: () => {
             action();
         }
     }
